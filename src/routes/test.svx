@@ -1,0 +1,11 @@
+---
+title: Test Markdown
+---
+
+<script>
+    import Card from "../components/Card.svelte";
+</script>
+
+This is an SVX file containing "FrontMatter", JS MarkDown and a Svelte component...
+
+<Card title="Title" content="Content" />

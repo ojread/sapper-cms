@@ -1,0 +1,6 @@
+---
+title: First post
+date: 2020-06-24
+---
+
+Welcome to the first post!
