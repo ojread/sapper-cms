@@ -5,6 +5,7 @@ import svelte from 'rollup-plugin-svelte';
 import babel from '@rollup/plugin-babel';
 import { terser } from 'rollup-plugin-terser';
 import config from 'sapper/config/rollup.js';
+import { mdsvex } from 'mdsvex'; 
 import pkg from './package.json';
 
 const mode = process.env.NODE_ENV;
@@ -12,6 +13,15 @@ const dev = mode === 'development';
 const legacy = !!process.env.SAPPER_LEGACY_BUILD;
 
 const onwarn = (warning, onwarn) => (warning.code === 'CIRCULAR_DEPENDENCY' && /[/\\]@sapper[/\\]/.test(warning.message)) || onwarn(warning);
+
+
+const svx = mdsvex({
+	extension: '.md', 
+	markdownOptions: {
+	  typographer: true,
+	  linkify: true,
+	},
+}); 
 
 export default {
 	client: {
@@ -24,8 +34,10 @@ export default {
 			}),
 			svelte({
 				dev,
+				extensions: ['.svelte', '.md', '.svx'],
 				hydratable: true,
-				emitCss: true
+				emitCss: true,
+				preprocess: [svx]
 			}),
 			resolve({
 				browser: true,
@@ -68,8 +80,10 @@ export default {
 				'process.env.NODE_ENV': JSON.stringify(mode)
 			}),
 			svelte({
+				extensions: ['.svelte', '.md', '.svx'],
 				generate: 'ssr',
-				dev
+				dev,
+				preprocess: svx
 			}),
 			resolve({
 				dedupe: ['svelte']
